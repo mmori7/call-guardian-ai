@@ -90,6 +90,12 @@ const CallAnalyzer = () => {
     setInputText("");
   };
 
+  const getProgressColorClass = (probability: number): string => {
+    if (probability > 70) return "bg-scam-critical";
+    if (probability > 40) return "bg-scam-medium";
+    return "bg-scam-low";
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card>
@@ -157,14 +163,7 @@ const CallAnalyzer = () => {
                 <div className="flex items-center">
                   <Progress 
                     value={currentTranscription.scamProbability} 
-                    className="w-24 mr-2"
-                    indicatorColor={
-                      currentTranscription.scamProbability > 70 
-                        ? "bg-scam-critical" 
-                        : currentTranscription.scamProbability > 40 
-                          ? "bg-scam-medium"
-                          : "bg-scam-low"
-                    }
+                    className={`w-24 mr-2 ${getProgressColorClass(currentTranscription.scamProbability)}`}
                   />
                   <span className="text-sm font-medium">
                     {currentTranscription.scamProbability}%
@@ -236,14 +235,7 @@ const CallAnalyzer = () => {
                 <div className="flex items-center">
                   <Progress 
                     value={currentTranscription.scamProbability} 
-                    className="w-24 mr-2"
-                    indicatorColor={
-                      currentTranscription.scamProbability > 70 
-                        ? "bg-scam-critical" 
-                        : currentTranscription.scamProbability > 40 
-                          ? "bg-scam-medium"
-                          : "bg-scam-low"
-                    }
+                    className={`w-24 mr-2 ${getProgressColorClass(currentTranscription.scamProbability)}`}
                   />
                   <span className="text-sm font-medium">
                     {currentTranscription.scamProbability}%
