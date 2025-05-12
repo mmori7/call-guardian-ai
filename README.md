@@ -1,4 +1,3 @@
-
 # CallShield - Scam Call Detection Application
 
 CallShield is an AI-powered application designed to detect and protect users from scam and fraudulent phone calls. Using advanced machine learning algorithms, it analyzes call patterns, transcriptions, and voice characteristics to identify potential scams in real-time.
