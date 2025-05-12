@@ -1,22 +1,28 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { mockStats } from "@/lib/mock-data";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { ScamStats } from "@/lib/types";
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchStats } from "@/lib/api";
 
 const COLORS = ['#0A2647', '#159895', '#FF9F29', '#CE1212', '#0088FE'];
 
 const CallStatistics = () => {
-  const [stats, setStats] = useState<ScamStats | null>(null);
+  const { data: stats, isLoading, error } = useQuery({
+    queryKey: ['stats'],
+    queryFn: fetchStats
+  });
   
-  useEffect(() => {
-    // In a real app, this would fetch from an API
-    setStats(mockStats);
-  }, []);
+  if (isLoading) {
+    return <div className="text-center py-8">Loading statistics...</div>;
+  }
+  
+  if (error) {
+    return <div className="text-center py-8 text-red-500">Error loading statistics: {(error as Error).message}</div>;
+  }
   
   if (!stats) {
-    return <div>Loading statistics...</div>;
+    return <div className="text-center py-8 text-slate-500">No statistics available</div>;
   }
   
   // Calculate percentage for scam calls

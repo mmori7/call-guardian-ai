@@ -10,21 +10,22 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { mockCalls } from "@/lib/mock-data";
+import { fetchCalls } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 
 const CallList = () => {
-  const [calls, setCalls] = useState<Call[]>([]);
   const [filteredCalls, setFilteredCalls] = useState<Call[]>([]);
   const [filterText, setFilterText] = useState("");
   const [filterRisk, setFilterRisk] = useState("all");
   
-  useEffect(() => {
-    // In a real app, this would fetch from an API
-    setCalls(mockCalls);
-    setFilteredCalls(mockCalls);
-  }, []);
+  const { data: calls = [], isLoading, error } = useQuery({
+    queryKey: ['calls'],
+    queryFn: fetchCalls
+  });
   
   useEffect(() => {
+    if (!calls) return;
+    
     let filtered = [...calls];
     
     // Apply text filter
@@ -50,6 +51,14 @@ const CallList = () => {
     
     setFilteredCalls(filtered);
   }, [filterText, filterRisk, calls]);
+  
+  if (isLoading) {
+    return <div className="text-center py-8">Loading calls...</div>;
+  }
+  
+  if (error) {
+    return <div className="text-center py-8 text-red-500">Error loading calls: {(error as Error).message}</div>;
+  }
   
   return (
     <div>
